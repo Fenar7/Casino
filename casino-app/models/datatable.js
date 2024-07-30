@@ -13,7 +13,31 @@ const DataSchema = new mongoose.Schema({
   time1minute: {
     type: Number,
     default: null
-  }
+  },
+  time2hour: {
+    type: Number,
+    default: null
+  },
+  time2minute: {
+    type: Number,
+    default: null
+  },
+  time3hour: {
+    type: Number,
+    default: null
+  },
+  time3minute: {
+    type: Number,
+    default: null
+  },
+  time4hour: {
+    type: Number,
+    default: null
+  },
+  time4minute: {
+    type: Number,
+    default: null
+  },
 });
 
 export default mongoose.models.Data || mongoose.model('Data', DataSchema);

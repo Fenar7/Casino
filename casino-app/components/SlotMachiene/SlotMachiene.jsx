@@ -88,15 +88,28 @@ const AnimatedText = () => {
             requestAnimationFrame(loop);
         };
 
-        const checkTimeAndStartAnimation = () => {
+        const checkTimeAndStartAnimation = async() => {
             const now = new Date();
+            console.log(now)
+            let prevdate = now
+            if(prevdate!=now){
+                console.log('date changed')
+                const date = now.toISOString().split('T')[0]; // 'YYYY-MM-DD' format
+                const response = await fetch('/api/setDate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({date}),
+                });
+            }
             const hours = now.getHours();
             const minutes = now.getMinutes();
 
             console.log(hours+":"+minutes)
 
             // Example: Start animation if it's between 10:00 and 10:05
-            if (hours === 21 && minutes >= 11 && !animationStarted) {
+            if (hours === 17 && minutes >= 1 && !animationStarted) {
                 startAnimation();
                 animationStarted = true;
                 clearInterval(intervalId); // Stop checking the time once the animation has started

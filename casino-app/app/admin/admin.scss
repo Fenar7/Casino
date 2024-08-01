@@ -1,6 +1,7 @@
 .admin-login-container{
+    height: 100vh;
     h1{
-        color: #1166EA;
+        color: #000;
         text-align: center;
         font-family: inherit;
         font-size: 3.125rem;
@@ -18,7 +19,7 @@
         align-items: center;
         gap: 0.625rem;
         border-radius: 0.625rem;
-background: #1166EA;
+background: #000;
 border: none;
 
         color: #FFF;

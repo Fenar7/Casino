@@ -15,28 +15,28 @@ export default async function handler(req, res) {
         let data = await Data.findOne({ date: localDate });
 
         if (!data) {
-            // If no document exists for the current date, create a new one with a random 4-digit number for time1number
+            // If no document exists for the current date, create a new one with a random 4-digit number for time2number
             const random4DigitNumber = Math.floor(1000 + Math.random() * 9000);
             data = new Data({
                 date: localDate,
-                time1number: random4DigitNumber,
+                time2number: random4DigitNumber,
             });
             await data.save();
-            return new Response(JSON.stringify({ time1number: random4DigitNumber }), {
+            return new Response(JSON.stringify({ time2number: random4DigitNumber }), {
                 status: 200,
             });
         } else {
-            if (data.time1number === null) {
-                // If time1number is null, generate a random 4-digit number and update the document
+            if (data.time2number === null || data.time2number === 0) {
+                // If time2number is null or 0, generate a random 4-digit number and update the document
                 const random4DigitNumber = Math.floor(1000 + Math.random() * 9000);
-                data.time1number = random4DigitNumber;
+                data.time2number = random4DigitNumber;
                 await data.save();
-                return new Response(JSON.stringify({ time1number: random4DigitNumber }), {
+                return new Response(JSON.stringify({ time2number: random4DigitNumber }), {
                     status: 200,
                 });
             } else {
-                // If time1number is not null, return the existing value
-                return new Response(JSON.stringify({ time1number: data.time1number }), {
+                // If time2number is not null and not 0, return the existing value
+                return new Response(JSON.stringify({ time2number: data.time2number }), {
                     status: 200,
                 });
             }

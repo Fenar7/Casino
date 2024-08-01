@@ -91,9 +91,9 @@ const AnimatedText = () => {
             const hours = now.getHours();
             const minutes = now.getMinutes();
 
-            if (hours === 23 && minutes >= 0 && !animationStarted) {
+            if (hours === 0 && minutes >= 0 && !animationStarted) {
                 try {
-                    const response = await fetch('/api/getNum1', {
+                    const response = await fetch('/api/getNum2', {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ const AnimatedText = () => {
                         console.log('API Response:', data);
 
                         // Pass the fetched data to startAnimation
-                        startAnimation(data.time1number.toString());
+                        startAnimation(data.time2number.toString());
 
                         animationStarted = true;
                         clearInterval(intervalId);

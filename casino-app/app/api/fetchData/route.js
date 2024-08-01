@@ -4,18 +4,25 @@ import Data from '@/models/datatable';
 export default async function handler(req, res) {
     try {
         await connectToDB();
-        const currentDate = new Date().toISOString().split('T')[0]; // Get only the date in 'YYYY-MM-DD' format
 
-        // Find the document with the current date and update it, or insert a new document if it doesn't exist
-        const oldData = await Data.findOne(
-            { date: currentDate },
-        );
+        // Adjust the date to reflect the local timezone
+        const currentDate = new Date();
+        const offset = currentDate.getTimezoneOffset();
+        currentDate.setMinutes(currentDate.getMinutes() - offset);
+        const localDate = currentDate.toISOString().split('T')[0]; // Get only the date in 'YYYY-MM-DD' format
 
-        if(oldData){
-            console.log(oldData)
-            return new Response(JSON.stringify(oldData),{
-                status:200
-            });            
+        // Find the document with the current date
+        const oldData = await Data.findOne({ date: localDate });
+
+        if (oldData) {
+            console.log(oldData);
+            return new Response(JSON.stringify(oldData), {
+                status: 200,
+            });
+        } else {
+            return new Response("No data found for today's date", {
+                status: 404,
+            });
         }
 
     } catch (error) {

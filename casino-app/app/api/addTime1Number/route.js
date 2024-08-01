@@ -27,7 +27,12 @@ export default async function handler(req, res) {
 
         await connectToDB();
 
-        const currentDate = new Date().toISOString().split('T')[0]; // Get only the date in 'YYYY-MM-DD' format
+        const currentDate = new Date();
+        const offset = currentDate.getTimezoneOffset();
+        currentDate.setMinutes(currentDate.getMinutes() - offset);
+        const localDate = currentDate.toISOString().split('T')[0]; // Local date in 'YYYY-MM-DD' format
+
+        console.log('current date:', localDate);
 
         const updateData = {
             time1number: time1numberNumber,
@@ -36,22 +41,19 @@ export default async function handler(req, res) {
             time4number: time4numberNumber,
         };
 
-        // Find the document with the current date and update it, or insert a new document if it doesn't exist
-        const oldData = await Data.findOne(
-            { date: currentDate },
-        );
+        const oldData = await Data.findOne({ date: localDate });
 
-        console.log("jdgjsdkfjsdf"+oldData)
-        if(oldData){
+        console.log("Old Data:", oldData);
+        if (oldData) {
             const data = await Data.findOneAndUpdate(
-                { date: currentDate },
+                { date: localDate },
                 { $set: updateData },
                 { new: true, upsert: true } // Create a new document if one doesn't exist
             );
-        console.log('Data updated');
-        }else{
+            console.log('Data updated');
+        } else {
             const data = new Data({
-                date: currentDate, // Save the current date
+                date: localDate, // Save the current date
                 time1number: time1numberNumber,
                 time2number: time2numberNumber,
                 time3number: time3numberNumber,
@@ -59,7 +61,7 @@ export default async function handler(req, res) {
             });
             await data.save();
 
-        console.log('Data inserted');
+            console.log('Data inserted');
         }
 
         return new Response("Success", { status: 201 });

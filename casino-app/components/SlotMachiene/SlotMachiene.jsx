@@ -1,6 +1,5 @@
 "use client";
 
-// components/AnimatedText.js
 import { useEffect, useRef } from 'react';
 import styles from './AnimatedText.module.css';
 
@@ -13,8 +12,7 @@ const AnimatedText = () => {
         let animationStarted = false;
         let intervalId;
 
-        const startAnimation = () => {
-            let text = '2345';
+        const startAnimation = (text) => {
             const chars = '1234567890'.split('');
             const scale = 50;
             const breaks = 0.003;
@@ -88,31 +86,35 @@ const AnimatedText = () => {
             requestAnimationFrame(loop);
         };
 
-        const checkTimeAndStartAnimation = async() => {
+        const checkTimeAndStartAnimation = async () => {
             const now = new Date();
-            console.log(now)
-            let prevdate = now
-            if(prevdate!=now){
-                console.log('date changed')
-                const date = now.toISOString().split('T')[0]; // 'YYYY-MM-DD' format
-                const response = await fetch('/api/setDate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({date}),
-                });
-            }
             const hours = now.getHours();
             const minutes = now.getMinutes();
 
-            console.log(hours+":"+minutes)
+            if (hours === 23 && minutes >= 0 && !animationStarted) {
+                try {
+                    const response = await fetch('/api/getNum1', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
 
-            // Example: Start animation if it's between 10:00 and 10:05
-            if (hours === 17 && minutes >= 1 && !animationStarted) {
-                startAnimation();
-                animationStarted = true;
-                clearInterval(intervalId); // Stop checking the time once the animation has started
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('API Response:', data);
+
+                        // Pass the fetched data to startAnimation
+                        startAnimation(data.time1number.toString());
+
+                        animationStarted = true;
+                        clearInterval(intervalId);
+                    } else {
+                        console.error('Failed to fetch data from the API');
+                    }
+                } catch (error) {
+                    console.error('Error fetching data from API:', error);
+                }
             }
         };
 

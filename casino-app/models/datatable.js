@@ -6,35 +6,19 @@ const DataSchema = new mongoose.Schema({
     type: Date,
     default: null
   },
-  time1hour: {
+  time1number: {
     type: Number,
     default: null
   },
-  time1minute: {
+  time2number: {
     type: Number,
     default: null
   },
-  time2hour: {
+  time3number: {
     type: Number,
     default: null
   },
-  time2minute: {
-    type: Number,
-    default: null
-  },
-  time3hour: {
-    type: Number,
-    default: null
-  },
-  time3minute: {
-    type: Number,
-    default: null
-  },
-  time4hour: {
-    type: Number,
-    default: null
-  },
-  time4minute: {
+  time4number: {
     type: Number,
     default: null
   },

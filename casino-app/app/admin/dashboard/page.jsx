@@ -83,7 +83,10 @@ export default function AdminDashboard() {
       <section className="dashboard-container-main container">
         <div className="heading d-flex align-items-center justify-content-between text-center margin-top margin-bottom">
           <h1>Admin Dashboard</h1>
-          <button onClick={handleLogout} className="btnn mt-3">Logout</button>
+          <div className="sidebar d-flex align-items-center">
+          <a href="/admin/dashboard/history">History</a>
+          <button onClick={handleLogout} className="btnn">Logout</button>
+          </div>
         </div>
 
         <form className="d-flex flex-column align-items-center justify-content-center" onSubmit={handleSubmit}>

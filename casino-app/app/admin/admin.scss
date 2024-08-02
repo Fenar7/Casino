@@ -8,6 +8,10 @@
         font-style: normal;
         font-weight: 500;
         line-height: normal;
+
+        @media(max-width:768px){
+            font-size: 2.6rem;
+        }
     }
 
     button{
@@ -28,9 +32,16 @@ border: none;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
+        @media(max-width:768px){
+            width: 70vw!important;
+        }
+
     }
 
     form{
+        @media(max-width:768px){
+            width: 70vw!important;
+        }
         gap: 1em;
         .mg-top{
             margin-top: 3em!important;

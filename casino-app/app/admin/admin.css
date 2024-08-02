@@ -10,6 +10,11 @@
   font-weight: 500;
   line-height: normal;
 }
+@media (max-width: 768px) {
+  .admin-login-container h1 {
+    font-size: 2.6rem;
+  }
+}
 .admin-login-container button {
   display: flex;
   width: 27.625rem;
@@ -28,8 +33,18 @@
   font-weight: 700;
   line-height: normal;
 }
+@media (max-width: 768px) {
+  .admin-login-container button {
+    width: 70vw !important;
+  }
+}
 .admin-login-container form {
   gap: 1em;
+}
+@media (max-width: 768px) {
+  .admin-login-container form {
+    width: 70vw !important;
+  }
 }
 .admin-login-container form .mg-top {
   margin-top: 3em !important;

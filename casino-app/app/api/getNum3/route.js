@@ -19,28 +19,28 @@ export default async function handler(req, res) {
         let data = await Data.findOne({ date: localDate });
 
         if (!data) {
-            // If no document exists for the current date, create a new one with a random 4-digit number for time2number
+            // If no document exists for the current date, create a new one with a random 4-digit number for time3number
             const random4DigitNumber = Math.floor(1000 + Math.random() * 9000);
             data = new Data({
                 date: localDate,
-                time2number: random4DigitNumber,
+                time3number: random4DigitNumber,
             });
             await data.save();
-            return new Response(JSON.stringify({ time2number: random4DigitNumber }), {
+            return new Response(JSON.stringify({ time3number: random4DigitNumber }), {
                 status: 200,
             });
         } else {
-            if (data.time2number === null || data.time2number === 0) {
-                // If time2number is null or 0, generate a random 4-digit number and update the document
+            if (data.time3number === null || data.time3number === 0) {
+                // If time3number is null or 0, generate a random 4-digit number and update the document
                 const random4DigitNumber = Math.floor(1000 + Math.random() * 9000);
-                data.time2number = random4DigitNumber;
+                data.time3number = random4DigitNumber;
                 await data.save();
-                return new Response(JSON.stringify({ time2number: random4DigitNumber }), {
+                return new Response(JSON.stringify({ time3number: random4DigitNumber }), {
                     status: 200,
                 });
             } else {
-                // If time2number is not null or 0, return the existing value
-                return new Response(JSON.stringify({ time2number: data.time2number }), {
+                // If time3number is not null or 0, return the existing value
+                return new Response(JSON.stringify({ time3number: data.time3number }), {
                     status: 200,
                 });
             }

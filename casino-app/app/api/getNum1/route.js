@@ -5,11 +5,15 @@ export default async function handler(req, res) {
     try {
         await connectToDB();
 
-        // Adjust the date to reflect the local timezone
-        const currentDate = new Date();
-        const offset = currentDate.getTimezoneOffset();
-        currentDate.setMinutes(currentDate.getMinutes() - offset);
-        const localDate = currentDate.toISOString().split('T')[0]; // Get only the date in 'YYYY-MM-DD' format
+        // Fetch the current date and time from World Time API for Asia/Kolkata
+        const response = await fetch('http://worldtimeapi.org/api/timezone/Asia/Kolkata');
+        if (!response.ok) {
+            throw new Error('Failed to fetch time from World Time API');
+        }
+        const timeData = await response.json();
+        const localDate = timeData.datetime.split('T')[0]; // Extract the date in 'YYYY-MM-DD' format
+
+        console.log('Current date (World Time API):', localDate);
 
         // Find the document with the current date
         let data = await Data.findOne({ date: localDate });
@@ -26,8 +30,8 @@ export default async function handler(req, res) {
                 status: 200,
             });
         } else {
-            if (data.time1number === null) {
-                // If time1number is null, generate a random 4-digit number and update the document
+            if (data.time1number === null || data.time1number === 0) {
+                // If time1number is null or 0, generate a random 4-digit number and update the document
                 const random4DigitNumber = Math.floor(1000 + Math.random() * 9000);
                 data.time1number = random4DigitNumber;
                 await data.save();
@@ -35,7 +39,7 @@ export default async function handler(req, res) {
                     status: 200,
                 });
             } else {
-                // If time1number is not null, return the existing value
+                // If time1number is not null or 0, return the existing value
                 return new Response(JSON.stringify({ time1number: data.time1number }), {
                     status: 200,
                 });

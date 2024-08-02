@@ -27,12 +27,15 @@ export default async function handler(req, res) {
 
         await connectToDB();
 
-        const currentDate = new Date();
-        const offset = currentDate.getTimezoneOffset();
-        currentDate.setMinutes(currentDate.getMinutes() - offset);
-        const localDate = currentDate.toISOString().split('T')[0]; // Local date in 'YYYY-MM-DD' format
+        // Fetching the current date and time from World Time API for Asia/Kolkata
+        const response = await fetch('http://worldtimeapi.org/api/timezone/Asia/Kolkata');
+        if (!response.ok) {
+            throw new Error('Failed to fetch time from World Time API');
+        }
+        const timeData = await response.json();
+        const localDate = timeData.datetime.split('T')[0]; // Extract the date in 'YYYY-MM-DD' format
 
-        console.log('current date:', localDate);
+        console.log('current date (World Time API):', localDate);
 
         const updateData = {
             time1number: time1numberNumber,
@@ -45,7 +48,7 @@ export default async function handler(req, res) {
 
         console.log("Old Data:", oldData);
         if (oldData) {
-            const data = await Data.findOneAndUpdate(
+            await Data.findOneAndUpdate(
                 { date: localDate },
                 { $set: updateData },
                 { new: true, upsert: true } // Create a new document if one doesn't exist

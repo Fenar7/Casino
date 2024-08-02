@@ -87,34 +87,44 @@ const AnimatedText = () => {
         };
 
         const checkTimeAndStartAnimation = async () => {
-            const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-
-            if (hours === 0 && minutes >= 0 && !animationStarted) {
-                try {
-                    const response = await fetch('/api/getNum2', {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        console.log('API Response:', data);
-
-                        // Pass the fetched data to startAnimation
-                        startAnimation(data.time2number.toString());
-
-                        animationStarted = true;
-                        clearInterval(intervalId);
-                    } else {
-                        console.error('Failed to fetch data from the API');
-                    }
-                } catch (error) {
-                    console.error('Error fetching data from API:', error);
+            try {
+                const response = await fetch('http://worldtimeapi.org/api/timezone/Asia/Kolkata');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch time from World Time API');
                 }
+                const timeData = await response.json();
+                const currentDateTime = new Date(timeData.datetime);
+                const hours = currentDateTime.getHours();
+                const minutes = currentDateTime.getMinutes();
+                console.log('World Time API DateTime:', currentDateTime);
+
+                if (hours === 13 && minutes >= 0 && !animationStarted) {
+                    try {
+                        const apiResponse = await fetch('/api/getNum3', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        });
+
+                        if (apiResponse.ok) {
+                            const data = await apiResponse.json();
+                            console.log('API Response:', data);
+
+                            // Pass the fetched data to startAnimation
+                            startAnimation(data.time3number.toString());
+
+                            animationStarted = true;
+                            clearInterval(intervalId);
+                        } else {
+                            console.error('Failed to fetch data from the API');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching data from API:', error);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching time from World Time API:', error);
             }
         };
 

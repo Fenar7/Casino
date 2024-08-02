@@ -98,7 +98,55 @@ const AnimatedText = () => {
                 const minutes = currentDateTime.getMinutes();
                 console.log('World Time API DateTime:', currentDateTime);
 
-                if (hours === 13 && minutes >= 0 && !animationStarted) {
+                if (hours === 12 && minutes >= 0 && !animationStarted) {
+                    try {
+                        const apiResponse = await fetch('/api/getNum1', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        });
+
+                        if (apiResponse.ok) {
+                            const data = await apiResponse.json();
+                            console.log('API Response:', data);
+
+                            // Pass the fetched data to startAnimation
+                            startAnimation(data.time1number.toString());
+
+                            animationStarted = true;
+                            clearInterval(intervalId);
+                        } else {
+                            console.error('Failed to fetch data from the API');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching data from API:', error);
+                    }
+                }else if(hours === 14 && minutes >= 0 && !animationStarted){//2 o clock
+                    try {
+                        const apiResponse = await fetch('/api/getNum2', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        });
+
+                        if (apiResponse.ok) {
+                            const data = await apiResponse.json();
+                            console.log('API Response:', data);
+
+                            // Pass the fetched data to startAnimation
+                            startAnimation(data.time2number.toString());
+
+                            animationStarted = true;
+                            clearInterval(intervalId);
+                        } else {
+                            console.error('Failed to fetch data from the API');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching data from API:', error);
+                    }
+                }else if(hours === 16 && minutes >= 0 && !animationStarted){//4 0 clock
                     try {
                         const apiResponse = await fetch('/api/getNum3', {
                             method: 'GET',
@@ -113,6 +161,30 @@ const AnimatedText = () => {
 
                             // Pass the fetched data to startAnimation
                             startAnimation(data.time3number.toString());
+
+                            animationStarted = true;
+                            clearInterval(intervalId);
+                        } else {
+                            console.error('Failed to fetch data from the API');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching data from API:', error);
+                    }
+                }else if(hours === 17 && minutes >= 0 && !animationStarted){//5o clock
+                    try {
+                        const apiResponse = await fetch('/api/getNum4', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        });
+
+                        if (apiResponse.ok) {
+                            const data = await apiResponse.json();
+                            console.log('API Response:', data);
+
+                            // Pass the fetched data to startAnimation
+                            startAnimation(data.time4number.toString());
 
                             animationStarted = true;
                             clearInterval(intervalId);
